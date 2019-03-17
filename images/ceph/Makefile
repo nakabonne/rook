@@ -17,7 +17,8 @@ include ../image.mk
 # ====================================================================================
 # Image Build Options
 
-CEPH_IMAGE = $(BUILD_REGISTRY)/ceph-$(GOARCH)
+#CEPH_IMAGE = $(BUILD_REGISTRY)/ceph-$(GOARCH)
+CEPH_IMAGE = nakabonne/ceph-$(GOARCH):1.4
 
 CEPH_VERSION = v13.2.2-20181023
 BASEIMAGE = ceph/ceph-$(GOARCH):$(CEPH_VERSION)

@@ -406,7 +406,7 @@ spec:
       serviceAccountName: rook-ceph-system
       containers:
       - name: rook-ceph-operator
-        image: rook/ceph:master
+        image: nakabonne/ceph-amd64:1.4
         args: ["ceph", "operator"]
         volumeMounts:
         - mountPath: /var/lib/rook
@@ -455,7 +455,7 @@ spec:
           value: "false"
         # The logging level for the operator: INFO | DEBUG
         - name: ROOK_LOG_LEVEL
-          value: "INFO"
+          value: "DEBUG"
         # The interval to check if every mon is in the quorum.
         - name: ROOK_MON_HEALTHCHECK_INTERVAL
           value: "45s"

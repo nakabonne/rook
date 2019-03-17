@@ -352,6 +352,8 @@ func (c *Cluster) assignMons(mons []*monConfig) error {
 	if err != nil {
 		return fmt.Errorf("failed to get available nodes for mons. %+v", err)
 	}
+	logger.Infof("availableNodesは %v", availableNodes)        // FIXME: 消す
+	logger.Infof("availableNodesの数は %v", len(availableNodes)) // FIXME: 消す
 
 	nodeIndex := 0
 	for _, m := range mons {
@@ -374,6 +376,10 @@ func (c *Cluster) assignMons(mons []*monConfig) error {
 		}
 		c.mapping.Node[m.DaemonName] = nodeInfo
 		nodeIndex++
+
+		if !c.spec.Mon.AllowMultiplePerNode && nodeIndex >= len(availableNodes) {
+			break
+		}
 	}
 
 	logger.Debug("mons have been assigned to nodes")
@@ -388,6 +394,8 @@ func (c *Cluster) startDeployments(mons []*monConfig, requireAllInQuorum bool) e
 	// Ensure each of the mons have been created. If already created, it will be a no-op.
 	for i := 0; i < len(mons); i++ {
 		node, _ := c.mapping.Node[mons[i].DaemonName]
+		logger.Infof("monsは %v", mons)
+		logger.Infof("iは %d", i)
 		err := c.startMon(mons[i], node.Hostname)
 		if err != nil {
 			return fmt.Errorf("failed to create mon %s. %+v", mons[i].DaemonName, err)
